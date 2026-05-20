@@ -3,6 +3,7 @@ const API_URL = "http://localhost:4000/rooms";
 const clientRoomsContainer = document.getElementById("clientRoomsContainer");
 const searchInput = document.getElementById("searchInput");
 const typeFilter = document.getElementById("typeFilter");
+const sortFilter = document.getElementById("sortFilter");
 
 let rooms = [];
 
@@ -20,6 +21,7 @@ function getGuestText(capacity) {
 function displayClientRooms() {
   const searchText = searchInput.value.toLowerCase();
   const selectedType = typeFilter.value;
+  const selectedSort = sortFilter.value;
 
   const filteredRooms = rooms.filter(function (room) {
     const isAvailable = room.status === "Available";
@@ -34,6 +36,18 @@ function displayClientRooms() {
 
     return isAvailable && matchesSearch && matchesType;
   });
+
+  if (selectedSort === "priceAsc") {
+  filteredRooms.sort(function (a, b) {
+    return a.pricePerNight - b.pricePerNight;
+  });
+}
+
+if (selectedSort === "priceDesc") {
+  filteredRooms.sort(function (a, b) {
+    return b.pricePerNight - a.pricePerNight;
+  });
+}
 
   clientRoomsContainer.innerHTML = "";
 
@@ -140,6 +154,7 @@ function closeRoomModal() {
 
 searchInput.addEventListener("input", displayClientRooms);
 typeFilter.addEventListener("change", displayClientRooms);
+sortFilter.addEventListener("change", displayClientRooms);
 
 function openExploreModal() {
   document.getElementById("exploreModal").style.display = "flex";

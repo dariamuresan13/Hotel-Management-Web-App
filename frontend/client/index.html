@@ -22,6 +22,16 @@
   <span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span>
   <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
 </div>
 
 
@@ -72,22 +82,27 @@
   <main class="container">
     <section class="client-filters">
       <h2>Available Rooms</h2>
+<div class="filter-row">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search by title, type or description..."
+  />
 
-      <div class="filter-row">
-        <input
-          type="text"
-          id="searchInput"
-          placeholder="Search by title, type or description..."
-        />
+  <select id="typeFilter">
+    <option value="All">All types</option>
+    <option value="Single">Single</option>
+    <option value="Double">Double</option>
+    <option value="Suite">Suite</option>
+    <option value="Family">Family</option>
+  </select>
 
-        <select id="typeFilter">
-          <option value="All">All types</option>
-          <option value="Single">Single</option>
-          <option value="Double">Double</option>
-          <option value="Suite">Suite</option>
-          <option value="Family">Family</option>
-        </select>
-      </div>
+  <select id="sortFilter">
+    <option value="default">Default order</option>
+    <option value="priceAsc">Price: low to high</option>
+    <option value="priceDesc">Price: high to low</option>
+  </select>
+</div>
     </section>
 
     <section id="availableRooms" class="rooms-section">
