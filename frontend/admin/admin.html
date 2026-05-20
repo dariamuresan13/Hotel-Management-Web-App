@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Room Management</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">Aurora Hotel Admin</div>
+  <div class="nav-links">
+    <a href="admin.html">Admin Dashboard</a>
+  </div>
+</nav>
+
+  <header class="hero">
+    <div>
+      <p class="subtitle">Luxury Hotel Dashboard</p>
+      <h1>Hotel Room Management</h1>
+      <p class="description">
+        Manage hotel rooms using a client-server application with full CRUD operations.
+      </p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="form-section">
+      <h2 id="formTitle">Add New Room</h2>
+
+      <form id="roomForm">
+        <input type="hidden" id="roomId" />
+
+        <div class="form-grid">
+          <input type="text" id="roomNumber" placeholder="Room number" required />
+          <input type="text" id="title" placeholder="Room title" required />
+
+          <select id="type" required>
+            <option value="">Select type</option>
+            <option value="Single">Single</option>
+            <option value="Double">Double</option>
+            <option value="Suite">Suite</option>
+            <option value="Family">Family</option>
+          </select>
+
+          <input type="number" id="capacity" placeholder="Capacity" required />
+          <input type="number" id="pricePerNight" placeholder="Price per night" required />
+          <input type="number" id="floor" placeholder="Floor" required />
+
+          <select id="status" required>
+            <option value="">Select status</option>
+            <option value="Available">Available</option>
+            <option value="Occupied">Occupied</option>
+            <option value="Maintenance">Maintenance</option>
+          </select>
+
+          <select id="hasBalcony" required>
+            <option value="">Balcony?</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+          <input type="text" id="amenities" placeholder="Amenities: Wi-Fi, TV, Mini fridge... " required />
+        </div>
+
+        <textarea id="description" placeholder="Description" required></textarea>
+
+        <div class="buttons">
+          <button type="submit" id="submitButton">Add Room</button>
+          <button type="button" id="cancelButton" class="secondary">Cancel Edit</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="rooms-section">
+      <h2>Rooms List</h2>
+      <div id="roomsContainer" class="rooms-grid"></div>
+    </section>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>
