@@ -3,80 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hotel Room Management</title>
+  <title>Moonrise Hotel - Admin Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="admin.css" />
 </head>
 <body>
 
-<nav class="navbar">
-  <div class="logo">Aurora Hotel Admin</div>
-  <div class="nav-links">
-    <a href="admin.html">Admin Dashboard</a>
+  <div class="dashboard-wrapper">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <span class="logo-icon">◇</span>
+        <div>
+          <h2>MOONRISE</h2>
+          <p>Admin Portal</p>
+        </div>
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" onclick="switchTab('overview', this)">
+          <i class="bi bi-grid-1x2"></i> Overview
+        </li>
+        <li class="nav-item" onclick="switchTab('rooms', this)">
+          <i class="bi bi-door-open"></i> Manage Rooms
+        </li>
+        <li class="nav-item" onclick="switchTab('bookings', this)">
+          <i class="bi bi-calendar-check"></i> Booking Requests
+        </li>
+      </ul>
+      
+      <div class="sidebar-footer">
+        <p><i class="bi bi-person-circle"></i> Admin User</p>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      
+      <header class="top-header">
+        <h1 id="pageTitle">Dashboard Overview</h1>
+        <button class="add-btn" onclick="openRoomModal()"><i class="bi bi-plus-lg"></i> Add New Room</button>
+      </header>
+
+      <!-- Quick Stats -->
+      <section class="stats-row" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-icon"><i class="bi bi-door-closed"></i></div>
+          <div class="stat-details">
+            <h3 id="statTotalRooms">0</h3>
+            <p>Total Rooms</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon occupied"><i class="bi bi-key"></i></div>
+          <div class="stat-details">
+            <h3 id="statOccupiedRooms">0</h3>
+            <p>Occupied Rooms</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon pending"><i class="bi bi-clock-history"></i></div>
+          <div class="stat-details">
+            <h3 id="statPendingBookings">0</h3>
+            <p>Pending Requests</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab Content: Overview -->
+      <section id="tab-overview" class="tab-content active">
+        <div class="overview-section">
+          <h2>Recent Pending Requests</h2>
+          <div id="overviewBookingsContainer" class="rooms-grid"></div>
+        </div>
+      </section>
+
+      <!-- Tab Content: Rooms -->
+      <section id="tab-rooms" class="tab-content">
+        <div class="section-header">
+          <h2>All Rooms</h2>
+        </div>
+        <div id="roomsContainer" class="rooms-grid"></div>
+      </section>
+
+      <!-- Tab Content: Bookings -->
+      <section id="tab-bookings" class="tab-content">
+        <div class="section-header">
+          <h2>All Booking Requests</h2>
+        </div>
+        <div id="bookingsContainer" class="rooms-grid"></div>
+      </section>
+
+    </main>
   </div>
-</nav>
 
-  <header class="hero">
-    <div>
-      <p class="subtitle">Luxury Hotel Dashboard</p>
-      <h1>Hotel Room Management</h1>
-      <p class="description">
-        Manage hotel rooms using a client-server application with full CRUD operations.
-      </p>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="form-section">
+  <!-- Room Form Modal -->
+  <div id="roomModal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeRoomModal()"><i class="bi bi-x-lg"></i></button>
+      
       <h2 id="formTitle">Add New Room</h2>
-
+      
       <form id="roomForm">
         <input type="hidden" id="roomId" />
 
         <div class="form-grid">
-          <input type="text" id="roomNumber" placeholder="Room number" required />
-          <input type="text" id="title" placeholder="Room title" required />
+          <div class="form-group">
+            <label>Room Number</label>
+            <input type="text" id="roomNumber" placeholder="e.g. 101" required />
+          </div>
+          <div class="form-group">
+            <label>Room Title</label>
+            <input type="text" id="title" placeholder="e.g. Deluxe Ocean View" required />
+          </div>
 
-          <select id="type" required>
-            <option value="">Select type</option>
-            <option value="Single">Single</option>
-            <option value="Double">Double</option>
-            <option value="Suite">Suite</option>
-            <option value="Family">Family</option>
-          </select>
+          <div class="form-group">
+            <label>Room Type</label>
+            <select id="type" required>
+              <option value="">Select type</option>
+              <option value="Single">Single</option>
+              <option value="Double">Double</option>
+              <option value="Suite">Suite</option>
+              <option value="Family">Family</option>
+            </select>
+          </div>
 
-          <input type="number" id="capacity" placeholder="Capacity" required />
-          <input type="number" id="pricePerNight" placeholder="Price per night" required />
-          <input type="number" id="floor" placeholder="Floor" required />
+          <div class="form-group">
+            <label>Capacity</label>
+            <input type="number" id="capacity" placeholder="Number of guests" required />
+          </div>
 
-          <select id="status" required>
-            <option value="">Select status</option>
-            <option value="Available">Available</option>
-            <option value="Occupied">Occupied</option>
-            <option value="Maintenance">Maintenance</option>
-          </select>
+          <div class="form-group">
+            <label>Price Per Night (RON)</label>
+            <input type="number" id="pricePerNight" placeholder="e.g. 250" required />
+          </div>
+          
+          <div class="form-group">
+            <label>Floor</label>
+            <input type="number" id="floor" placeholder="e.g. 1" required />
+          </div>
 
-          <select id="hasBalcony" required>
-            <option value="">Balcony?</option>
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          <input type="text" id="amenities" placeholder="Amenities: Wi-Fi, TV, Mini fridge... " required />
+          <div class="form-group">
+            <label>Status</label>
+            <select id="status" required>
+              <option value="">Select status</option>
+              <option value="Available">Available</option>
+              <option value="Occupied">Occupied</option>
+              <option value="Maintenance">Maintenance</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Balcony?</label>
+            <select id="hasBalcony" required>
+              <option value="">Select option</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
         </div>
 
-        <textarea id="description" placeholder="Description" required></textarea>
+        <div class="form-group full-width">
+          <label>Amenities (comma separated)</label>
+          <input type="text" id="amenities" placeholder="e.g. Wi-Fi, TV, Mini fridge" required />
+        </div>
 
-        <div class="buttons">
-          <button type="submit" id="submitButton">Add Room</button>
-          <button type="button" id="cancelButton" class="secondary">Cancel Edit</button>
+        <div class="form-group full-width">
+          <label>Description</label>
+          <textarea id="description" placeholder="Write a captivating description..." required></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" onclick="closeRoomModal()">Cancel</button>
+          <button type="submit" id="submitButton" class="btn-primary">Save Room</button>
         </div>
       </form>
-    </section>
-
-    <section class="rooms-section">
-      <h2>Rooms List</h2>
-      <div id="roomsContainer" class="rooms-grid"></div>
-    </section>
-  </main>
+    </div>
+  </div>
 
   <script src="admin.js"></script>
 </body>

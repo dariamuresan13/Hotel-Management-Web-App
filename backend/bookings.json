@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "roomId": 1,
+    "clientName": "mihai",
+    "clientEmail": "mihai@mih.ro",
+    "checkInDate": "2026-07-14",
+    "checkOutDate": "2026-07-17",
+    "status": "approved",
+    "createdAt": "2026-06-02T07:03:51.302Z"
+  },
+  {
+    "id": 2,
+    "roomId": 2,
+    "clientName": "ana",
+    "clientEmail": "anana@ana.ro",
+    "checkInDate": "2026-06-09",
+    "checkOutDate": "2026-06-10",
+    "status": "approved",
+    "createdAt": "2026-06-02T07:05:33.982Z"
+  },
+  {
+    "id": 3,
+    "roomId": 3,
+    "clientName": "nldksa",
+    "clientEmail": "asmkdpkpasl@kndsak.com",
+    "checkInDate": "2026-07-02",
+    "checkOutDate": "2026-07-03",
+    "status": "approved",
+    "createdAt": "2026-06-02T07:53:12.738Z"
+  }
+]

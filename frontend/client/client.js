@@ -24,7 +24,7 @@ function displayClientRooms() {
   const selectedSort = sortFilter.value;
 
   const filteredRooms = rooms.filter(function (room) {
-    const isAvailable = room.status === "Available";
+    const isValidStatus = room.status === "Available" || room.status === "Occupied";
 
     const matchesSearch =
       room.title.toLowerCase().includes(searchText) ||
@@ -34,7 +34,7 @@ function displayClientRooms() {
     const matchesType =
       selectedType === "All" || room.type === selectedType;
 
-    return isAvailable && matchesSearch && matchesType;
+    return isValidStatus && matchesSearch && matchesType;
   });
 
   if (selectedSort === "priceAsc") {
@@ -62,13 +62,18 @@ if (selectedSort === "priceDesc") {
     const card = document.createElement("div");
     card.className = "room-card";
 
+    const isOccupied = room.status === "Occupied";
+    const buttonHtml = isOccupied 
+      ? `<button class="booked-btn" disabled>Fully Booked</button>` 
+      : `<button onclick="viewRoomDetails(${room.id})">View Details</button>`;
+
     card.innerHTML = `
   <span class="badge">${room.type}</span>
   <h3>${room.title}</h3>
 <p><strong>Capacity:</strong> ${room.capacity} ${getGuestText(room.capacity)}</p>
 <p><strong>Price:</strong> ${room.pricePerNight} RON / night</p>
 <p>${room.description}</p>
-  <button onclick="viewRoomDetails(${room.id})">View Details</button>
+  ${buttonHtml}
 `;
 
     clientRoomsContainer.appendChild(card);
@@ -144,12 +149,63 @@ function viewRoomDetails(roomId) {
     </div>
   `;
 
+  document.getElementById("bookingRoomId").value = roomId;
+  document.getElementById("bookingForm").reset();
+  document.getElementById("bookingMessage").style.display = "none";
+
   document.getElementById("roomModal").style.display = "flex";
 }
 
 function closeRoomModal() {
   document.getElementById("roomModal").style.display = "none";
 }
+
+document.getElementById("bookingForm").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  const roomId = document.getElementById("bookingRoomId").value;
+  const clientName = document.getElementById("clientName").value;
+  const clientEmail = document.getElementById("clientEmail").value;
+  const checkInDate = document.getElementById("checkInDate").value;
+  const checkOutDate = document.getElementById("checkOutDate").value;
+  const submitBtn = document.getElementById("submitBookingBtn");
+  const messageEl = document.getElementById("bookingMessage");
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  try {
+    const response = await fetch("http://localhost:4000/bookings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        roomId,
+        clientName,
+        clientEmail,
+        checkInDate,
+        checkOutDate
+      })
+    });
+
+    if (response.ok) {
+      messageEl.textContent = "Booking request submitted successfully!";
+      messageEl.className = "booking-message success";
+      messageEl.style.display = "block";
+      document.getElementById("bookingForm").reset();
+    } else {
+      throw new Error("Failed to submit request");
+    }
+  } catch (error) {
+    messageEl.textContent = "Error submitting request. Please try again.";
+    messageEl.className = "booking-message error";
+    messageEl.style.display = "block";
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Submit Request";
+  }
+});
 
 
 searchInput.addEventListener("input", displayClientRooms);
